@@ -27,6 +27,6 @@ rl.on("line", function (line) {
             if (bx > 0 && by > 0) count += 1;
         });
     })
-    console.log(count);;
+    console.log(count);
     process.exit();
 });
