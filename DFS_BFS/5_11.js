@@ -19,48 +19,41 @@ rl.on("line", function (line) {
         return y > -1 && y < N && x > -1 && x < M;
     }
 
-    function check(y, x, queue, map) {
-        if(isValid(y, x) && map[y][x] === 0) {
+    function check(y, x, queue, map, before) {
+        if(isValid(y, x) && map[y][x] === 1) {
             queue.push({y, x});
-            map[y][x] = 1;
+            map[y][x] += before;
         }
     }
 
     function bfs ({y, x}) {
         const queue = [{y, x}];
+        // console.log(y, x);
         map[y][x] = 1;
         while (queue.length !== 0) {
             const v = queue.shift();
+            const before = map[v.y][v.x];
             // 상
             const uy = v.y - 1;
             const ux = v.x; 
-            check(uy, ux, queue, map);
+            check(uy, ux, queue, map, before);
             // 하
             const dy = v.y + 1;
             const dx = v.x;
-            check(dy, dx, queue, map);
+            check(dy, dx, queue, map, before);
             // 좌
             const ly = v.y;
             const lx = v.x + 1;
-            check(ly, lx, queue, map);
+            check(ly, lx, queue, map, before);
             // 우
             const ry = v.y;
             const rx = v.x - 1;
-            check(ry, rx, queue, map);
+            check(ry, rx, queue, map, before);
         }
     }
 
-    let cnt = 0;
-    for (let i=0; i<N; i+=1) {
-        for (let j=0; j<M; j+=1) {
-            if (map[i][j] === 0) {
-                cnt += 1;
-                bfs({y: i, x: j});
-            }
-        }
-    }
-
-    console.log(cnt);
+    bfs({y: 0, x: 0});
+    console.log(map[N-1][M-1]);
 
     process.exit();
 });
